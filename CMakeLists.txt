@@ -6,9 +6,8 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
 
-set (SRC_FILES 
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/GameOfLife/GameOfLife.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/GameOfLife/public/GameOfLife.hpp
+set(SOURCE_DIR 
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/GameOfLife/
 )
 
 set(PUBLIC_HEADERS_DIR
@@ -17,6 +16,11 @@ set(PUBLIC_HEADERS_DIR
 
 set(PRIVATE_HEADERS_DIR 
     ${CMAKE_CURRENT_SOURCE_DIR}/include/GameOfLife/private/  
+)
+
+set (SRC_FILES 
+    ${SOURCE_DIR}/GameOfLife.cpp
+    ${PUBLIC_HEADERS_DIR}/GameOfLife.hpp
 )
 
 add_library(${PROJECT_NAME} ${SRC_FILES})
