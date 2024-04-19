@@ -1,4 +1,4 @@
-#include "GameOfLife/GameOfLife.hpp"
+#include "GameOfLife.hpp"
 
 int main()
 {
