@@ -21,6 +21,11 @@ set(GOF_PRIVATE_HEADERS_DIR
 set (SRC_FILES 
     ${GOF_SOURCE_DIR}/GameOfLife.cpp
     ${GOF_PUBLIC_HEADERS_DIR}/GameOfLife.hpp
+    ${GOF_PRIVATE_HEADERS_DIR}/GOFTypes.hpp
+    ${GOF_PRIVATE_HEADERS_DIR}/ICheckBoard.hpp
+
+    ${GOF_PRIVATE_HEADERS_DIR}/ArrayCheckBoard.hpp
+    ${GOF_SOURCE_DIR}/ArrayCheckBoard.cpp
 )
 
 add_library(${PROJECT_NAME} ${SRC_FILES})
