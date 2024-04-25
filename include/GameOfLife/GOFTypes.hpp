@@ -14,6 +14,8 @@ enum class cell_t : uint8_t
     ALIVE = 0b00001100
 };
 
+inline cell_t ALIVE_FLAG = static_cast<cell_t>(0b00000100);    
+
 }
 
 #endif

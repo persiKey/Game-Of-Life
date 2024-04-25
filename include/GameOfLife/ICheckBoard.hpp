@@ -17,9 +17,18 @@ public:
 
     virtual ~ICheckBoard() = default;
 
-    virtual cell_t Get(index_t i, index_t j) = 0;
-    virtual void Set(index_t i, index_t j, cell_t value) = 0;
+    virtual cell_t Get(index_t i, index_t j) const = 0;
+    virtual void Set(index_t i, index_t j, cell_t value)= 0;
 
+    inline index_t Length() const
+    {
+        return m_checkboard_length;
+    }
+
+    inline index_t Height() const
+    {
+        return m_checkboard_height;
+    }
 protected:
     index_t m_checkboard_length;
     index_t m_checkboard_height;
@@ -36,9 +45,19 @@ public:
 
     }
 
-    virtual cell_t BigGet(index_t i, index_t j) = 0;
+    virtual cell_t BigGet(index_t i, index_t j) const = 0;
     virtual void BigSet(index_t i, index_t j, cell_t value) = 0;
 
+    inline index_t BigLength() const
+    {
+        return m_big_checkboard_length;
+    }
+
+    inline index_t BigHeight() const
+    {
+        return m_big_checkboard_height;
+    }
+    
 protected:
     index_t m_big_checkboard_length;
     index_t m_big_checkboard_height;

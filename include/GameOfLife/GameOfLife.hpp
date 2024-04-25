@@ -13,11 +13,11 @@ namespace GameOfLife
 class GameOfLife
 {
 public:
-    GameOfLife(index_t length, index_t heigh, std::unique_ptr<IBorderGOFAlgorithm> solver);
+    GameOfLife(index_t length, index_t height, std::unique_ptr<IBorderGOFAlgorithm> &&solver);
 
-    const ICheckBoard& GetCheckBoard();
+    const ICheckBoard& GetCheckBoard() const;
     const ICheckBoard& NextStep();
-    std::size_t GetCurrentStep();
+    std::size_t GetCurrentStep() const;
 
 private:
     std::shared_ptr<IBorderCheckBoard> m_checkboard;
