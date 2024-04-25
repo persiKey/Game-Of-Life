@@ -9,8 +9,8 @@ namespace GameOfLife
 class ICheckBoard
 {
 public:
-    inline ICheckBoard(index_t length, index_t heigh) 
-    : m_checkboard_length(length), m_checkboard_heigh(heigh) 
+    inline ICheckBoard(index_t length, index_t height) 
+    : m_checkboard_length(length), m_checkboard_height(height) 
     {
         
     }
@@ -22,15 +22,15 @@ public:
 
 protected:
     index_t m_checkboard_length;
-    index_t m_checkboard_heigh;
+    index_t m_checkboard_height;
 };
 
 class IBorderCheckBoard : public ICheckBoard
 {
 public:
-    inline IBorderCheckBoard(index_t length, index_t heigh) 
-    : ICheckBoard(length, heigh), 
-    m_big_checkboard_length(length + 2), m_big_checkboard_height(heigh + 2),
+    inline IBorderCheckBoard(index_t length, index_t height) 
+    : ICheckBoard(length, height), 
+    m_big_checkboard_length(length + 2), m_big_checkboard_height(height + 2),
     INDEXING_OFFSET(m_big_checkboard_length + 1)
     {
 
@@ -40,9 +40,9 @@ public:
     virtual void BigSet(index_t i, index_t j, cell_t value) = 0;
 
 protected:
-    const index_t INDEXING_OFFSET;
     index_t m_big_checkboard_length;
     index_t m_big_checkboard_height;
+    const index_t INDEXING_OFFSET;
 };
 
 }

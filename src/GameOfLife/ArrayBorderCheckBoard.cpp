@@ -2,8 +2,8 @@
 
 namespace GameOfLife
 {
-ArrayBorderCheckBoard::ArrayBorderCheckBoard(index_t length, index_t heigh)
-: IBorderCheckBoard(length, heigh)
+ArrayBorderCheckBoard::ArrayBorderCheckBoard(index_t length, index_t height)
+: IBorderCheckBoard(length, height)
 {
 }
 

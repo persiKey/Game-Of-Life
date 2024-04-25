@@ -9,8 +9,8 @@ namespace GameOfLife
 class ArrayBorderCheckBoard : public IBorderCheckBoard
 {
 public:
-    ArrayBorderCheckBoard(index_t length, index_t heigh);
-    virtual ~ArrayBorderCheckBoard();
+    ArrayBorderCheckBoard(index_t length, index_t height);
+    ~ArrayBorderCheckBoard() override;
 
     virtual cell_t Get(index_t i, index_t j) override;
     virtual void Set(index_t i, index_t j, cell_t value) override;
