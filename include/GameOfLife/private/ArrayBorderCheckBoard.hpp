@@ -1,0 +1,27 @@
+#ifndef ARRAY_CHECK_BOARD_HPP
+#define ARRAY_CHECK_BOARD_HPP
+
+#include "ICheckBoard.hpp"
+
+namespace GameOfLife
+{
+
+class ArrayBorderCheckBoard : public IBorderCheckBoard
+{
+public:
+    ArrayBorderCheckBoard(index_t length, index_t heigh);
+    virtual ~ArrayBorderCheckBoard();
+
+    virtual cell_t Get(index_t i, index_t j) override;
+    virtual void Set(index_t i, index_t j, cell_t value) override;
+
+    virtual cell_t BigGet(index_t i, index_t j) override;
+    virtual void BigSet(index_t i, index_t j, cell_t value) override;    
+
+private:
+    cell_t* m_data;
+};
+
+}
+
+#endif
