@@ -15,21 +15,21 @@ ArrayBorderCheckBoard::~ArrayBorderCheckBoard()
 
 cell_t ArrayBorderCheckBoard::Get(index_t i, index_t j) const
 {
-    return m_data[INDEXING_OFFSET + i * m_big_checkboard_length + j];
+    return m_data[INDEXING_OFFSET + i + j * m_big_checkboard_length];
 }
 
 void ArrayBorderCheckBoard::Set(index_t i, index_t j, cell_t value)
 {
-    m_data[INDEXING_OFFSET + i * m_big_checkboard_length + j] = value;
+    m_data[INDEXING_OFFSET + i + j * m_big_checkboard_length] = value;
 }
 
 cell_t ArrayBorderCheckBoard::BigGet(index_t i, index_t j) const
 {
-    return m_data[i * m_big_checkboard_length + j];
+    return m_data[i + j * m_big_checkboard_length];
 }
 
 void ArrayBorderCheckBoard::BigSet(index_t i, index_t j, cell_t value)
 {
-    m_data[i * m_big_checkboard_length + j] = value;
+    m_data[i + j * m_big_checkboard_length] = value;
 }
 }

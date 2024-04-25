@@ -22,13 +22,17 @@ set (SRC_FILES
     ${GOF_HEADERS_DIR}/GOFTypes.hpp
     ${GOF_HEADERS_DIR}/IGOFAlgorithm.hpp
     ${GOF_HEADERS_DIR}/ICheckBoard.hpp
-    
+    ${GOF_HEADERS_DIR}/ICheckBoardFiller.hpp
+
     ${GOF_HEADERS_DIR}/ArrayBorderCheckBoard.hpp
     ${GOF_SOURCE_DIR}/ArrayBorderCheckBoard.cpp
-    
+
     ${GOF_HEADERS_DIR}/SequentialTorusGOFAlgorithm.hpp
     ${GOF_SOURCE_DIR}/SequentialTorusGOFAlgorithm.cpp
-    
+
+    ${GOF_SOURCE_DIR}/RandomFiller.cpp
+    ${GOF_HEADERS_DIR}/RandomFiller.hpp
+
 )
 
 add_library(${PROJECT_NAME} ${SRC_FILES})

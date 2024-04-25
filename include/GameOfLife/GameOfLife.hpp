@@ -6,14 +6,19 @@
 
 #include "ICheckBoard.hpp"
 #include "IGOFAlgorithm.hpp"
+#include "RandomFiller.hpp"
 
 namespace GameOfLife
 {
-     
-class GameOfLife
+
+
+class GOF
 {
 public:
-    GameOfLife(index_t length, index_t height, std::unique_ptr<IBorderGOFAlgorithm> &&solver);
+    GOF(index_t length,
+               index_t height,
+               std::unique_ptr<IBorderGOFAlgorithm> &&solver,
+               std::unique_ptr<ICheckBoardFiller> filler);
 
     const ICheckBoard& GetCheckBoard() const;
     const ICheckBoard& NextStep();
