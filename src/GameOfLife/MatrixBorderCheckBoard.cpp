@@ -29,21 +29,21 @@ MatrixBorderCheckBoard::~MatrixBorderCheckBoard()
 
 cell_t MatrixBorderCheckBoard::Get(index_t i, index_t j) const
 {
-    return m_data[INDEXING_OFFSET + i][INDEXING_OFFSET + j];
+    return m_data[INDEXING_OFFSET + j][INDEXING_OFFSET + i];
 }
 
 void MatrixBorderCheckBoard::Set(index_t i, index_t j, cell_t value)
 {
-    m_data[INDEXING_OFFSET + i][INDEXING_OFFSET + j] = value;
+    m_data[INDEXING_OFFSET + j][INDEXING_OFFSET + i] = value;
 }
 
 cell_t MatrixBorderCheckBoard::BigGet(index_t i, index_t j) const
 {
-    return m_data[i][j];
+    return m_data[j][i];
 }
 
 void MatrixBorderCheckBoard::BigSet(index_t i, index_t j, cell_t value)
 {
-    m_data[i][j] = value;
+    m_data[j][i] = value;
 }
 }
