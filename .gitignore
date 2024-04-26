@@ -1,3 +1,6 @@
+# build
+*build*/*
+
 # Prerequisites
 *.d
 
@@ -30,3 +33,6 @@
 *.exe
 *.out
 *.app
+
+.vscode/
+.idea/
