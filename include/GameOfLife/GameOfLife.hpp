@@ -4,7 +4,6 @@
 #include <memory>
 
 #include "IGOF.hpp"
-#include "IGOFAlgorithm.hpp"
 #include "ICheckBoardFiller.hpp"
 
 namespace GameOfLife

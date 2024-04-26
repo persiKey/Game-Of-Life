@@ -4,7 +4,9 @@
 
 #include "GameOfLife.hpp"
 #include "SequentialTorusGOFAlgorithm.hpp"
+#include "SequentialVectorTorusGOFAlgorithm.hpp"
 #include "FromFileFiller.hpp"
+#include "RandomFiller.hpp"
 #include "VectorBorderCheckBoard.hpp"
 
 void PrintCheckboard(const GameOfLife::ICheckBoard& checkboard)
@@ -23,15 +25,16 @@ int main(int argc, char *argv[])
 {
     using namespace GameOfLife;
 
-    GOF<VectorBorderCheckBoard, SequentialTorusGOFAlgorithm> GameOfLife( 10,
+    GOF<VectorBorderCheckBoard, SequentialVectorTorusGOFAlgorithm> GameOfLife( 100,
                     8,
-                    std::make_unique<FromFileFiller>(argv[1]));
+                    std::make_unique<RandomFiller>(0.3)
+                    );
 
     std::cout << "Generated\n";
     
     while (true)
     {
-
+        //system("cls");
         PrintCheckboard(GameOfLife.GetCheckBoard());
         std::cout << "Step " << GameOfLife.GetCurrentStep() << '\n';
         //std::getchar();

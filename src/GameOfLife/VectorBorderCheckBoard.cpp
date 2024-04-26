@@ -6,7 +6,7 @@ VectorBorderCheckBoard::VectorBorderCheckBoard(index_t length, index_t height)
 : IBorderCheckBoard(length, height),
   SMALL_TO_BIG_INDEXING_OFFSET(m_big_checkboard_length + 1),
   UP_LEFT_INDEXING_OFFSET(m_big_checkboard_length + 1),
-  DOWN_LEFT_INDEXING_OFFSET(m_big_checkboard_height - 1)
+  DOWN_LEFT_INDEXING_OFFSET(m_big_checkboard_length - 1)
 {
     m_data = new cell_t[m_big_checkboard_height * m_big_checkboard_length]{cell_t::DEAD};
 }
