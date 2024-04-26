@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
 {
     using namespace GameOfLife;
 
-    GOF GameOfLife( 10,
+    BorderCheckBoardGOF GameOfLife( 10,
                     8,
                    std::move(std::unique_ptr<IBorderGOFAlgorithm>(new SequentialTorusGOFAlgorithm())),
                    std::unique_ptr<ICheckBoardFiller>(new FromFileFiller(argv[1])));

@@ -20,6 +20,7 @@ set (SRC_FILES
     ${GOF_HEADERS_DIR}/GameOfLife.hpp
 
     ${GOF_HEADERS_DIR}/GOFTypes.hpp
+    ${GOF_HEADERS_DIR}/IGOF.hpp
     ${GOF_HEADERS_DIR}/IGOFAlgorithm.hpp
     ${GOF_HEADERS_DIR}/ICheckBoard.hpp
     ${GOF_HEADERS_DIR}/ICheckBoardFiller.hpp
