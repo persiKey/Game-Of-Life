@@ -33,6 +33,9 @@ set (SRC_FILES
     ${GOF_SOURCE_DIR}/RandomFiller.cpp
     ${GOF_HEADERS_DIR}/RandomFiller.hpp
 
+    ${GOF_SOURCE_DIR}/FromFileFiller.cpp
+    ${GOF_HEADERS_DIR}/FromFileFiller.hpp
+
 )
 
 add_library(${PROJECT_NAME} ${SRC_FILES})

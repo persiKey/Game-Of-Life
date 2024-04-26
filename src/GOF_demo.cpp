@@ -1,9 +1,10 @@
-#include "GameOfLife.hpp"
 #include <iostream>
 #include <thread>
-#include "SequentialTorusGOFAlgorithm.hpp"
+
 
 #include "GameOfLife.hpp"
+#include "SequentialTorusGOFAlgorithm.hpp"
+#include "FromFileFiller.hpp"
 
 void PrintCheckboard(const GameOfLife::ICheckBoard& checkboard)
 {
@@ -17,20 +18,21 @@ void PrintCheckboard(const GameOfLife::ICheckBoard& checkboard)
     }
 }
 
-int main()
+int main(int argc, char *argv[])
 {
     using namespace GameOfLife;
 
-    GOF GameOfLife( 70000,
-                    20000,
+    GOF GameOfLife( 10,
+                    8,
                    std::move(std::unique_ptr<IBorderGOFAlgorithm>(new SequentialTorusGOFAlgorithm())),
-                   std::unique_ptr<ICheckBoardFiller>(new RandomFiller(0.5)));
+                   std::unique_ptr<ICheckBoardFiller>(new FromFileFiller(argv[1])));
 
     std::cout << "Generated\n";
+    
     while (true)
     {
 
-        //PrintCheckboard(GameOfLife.GetCheckBoard());
+        PrintCheckboard(GameOfLife.GetCheckBoard());
         std::cout << "Step " << GameOfLife.GetCurrentStep() << '\n';
         //std::getchar();
         using namespace std::chrono_literals;

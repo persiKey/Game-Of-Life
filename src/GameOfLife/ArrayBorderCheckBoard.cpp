@@ -5,7 +5,7 @@ namespace GameOfLife
 ArrayBorderCheckBoard::ArrayBorderCheckBoard(index_t length, index_t height)
 : IBorderCheckBoard(length, height)
 {
-    m_data = new cell_t[m_big_checkboard_height * m_big_checkboard_length];
+    m_data = new cell_t[m_big_checkboard_height * m_big_checkboard_length]{cell_t::DEAD};
 }
 
 ArrayBorderCheckBoard::~ArrayBorderCheckBoard()

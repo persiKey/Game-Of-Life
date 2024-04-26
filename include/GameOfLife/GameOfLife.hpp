@@ -11,7 +11,6 @@
 namespace GameOfLife
 {
 
-
 class GOF
 {
 public:
