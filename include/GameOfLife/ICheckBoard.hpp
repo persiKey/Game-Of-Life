@@ -39,8 +39,7 @@ class IBorderCheckBoard : public ICheckBoard
 public:
     inline IBorderCheckBoard(index_t length, index_t height) 
     : ICheckBoard(length, height), 
-    m_big_checkboard_length(length + 2), m_big_checkboard_height(height + 2),
-    INDEXING_OFFSET(m_big_checkboard_length + 1)
+    m_big_checkboard_length(length + 2), m_big_checkboard_height(height + 2)
     {
 
     }
@@ -61,7 +60,6 @@ public:
 protected:
     index_t m_big_checkboard_length;
     index_t m_big_checkboard_height;
-    const index_t INDEXING_OFFSET;
 };
 
 }

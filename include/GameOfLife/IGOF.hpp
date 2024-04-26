@@ -13,9 +13,12 @@ class IGOF
 public:
     virtual ~IGOF() = default;
 
-    const ICheckBoard& GetCheckBoard() const;
-    const ICheckBoard& NextStep();
-    std::size_t GetCurrentStep() const;
+    virtual const ICheckBoard& GetCheckBoard() const = 0;
+    virtual const ICheckBoard& NextStep() = 0;
+    inline std::size_t GetCurrentStep() const
+    {
+        return m_step;
+    }
 protected:
     std::size_t m_step = 0;
 };

@@ -5,6 +5,7 @@
 #include "GameOfLife.hpp"
 #include "SequentialTorusGOFAlgorithm.hpp"
 #include "FromFileFiller.hpp"
+#include "VectorBorderCheckBoard.hpp"
 
 void PrintCheckboard(const GameOfLife::ICheckBoard& checkboard)
 {
@@ -22,10 +23,9 @@ int main(int argc, char *argv[])
 {
     using namespace GameOfLife;
 
-    BorderCheckBoardGOF GameOfLife( 10,
+    GOF<VectorBorderCheckBoard, SequentialTorusGOFAlgorithm> GameOfLife( 10,
                     8,
-                   std::move(std::unique_ptr<IBorderGOFAlgorithm>(new SequentialTorusGOFAlgorithm())),
-                   std::unique_ptr<ICheckBoardFiller>(new FromFileFiller(argv[1])));
+                    std::make_unique<FromFileFiller>(argv[1]));
 
     std::cout << "Generated\n";
     

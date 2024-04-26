@@ -16,20 +16,27 @@ set(GOF_HEADERS_DIR
 
 
 set (SRC_FILES 
-    ${GOF_SOURCE_DIR}/GameOfLife.cpp
     ${GOF_HEADERS_DIR}/GameOfLife.hpp
 
     ${GOF_HEADERS_DIR}/GOFTypes.hpp
     ${GOF_HEADERS_DIR}/IGOF.hpp
-    ${GOF_HEADERS_DIR}/IGOFAlgorithm.hpp
     ${GOF_HEADERS_DIR}/ICheckBoard.hpp
     ${GOF_HEADERS_DIR}/ICheckBoardFiller.hpp
 
-    ${GOF_HEADERS_DIR}/ArrayBorderCheckBoard.hpp
-    ${GOF_SOURCE_DIR}/ArrayBorderCheckBoard.cpp
+    ${GOF_HEADERS_DIR}/IGOFAlgorithm.hpp
+    ${GOF_SOURCE_DIR}/IGOFAlgorithm.cpp
+
+    ${GOF_HEADERS_DIR}/VectorBorderCheckBoard.hpp
+    ${GOF_SOURCE_DIR}/VectorBorderCheckBoard.cpp
+
+    ${GOF_HEADERS_DIR}/MatrixBorderCheckBoard.hpp
+    ${GOF_SOURCE_DIR}/MatrixBorderCheckBoard.cpp
 
     ${GOF_HEADERS_DIR}/SequentialTorusGOFAlgorithm.hpp
     ${GOF_SOURCE_DIR}/SequentialTorusGOFAlgorithm.cpp
+
+    ${GOF_HEADERS_DIR}/SequentialVectorTorusGOFAlgorithm.hpp
+    ${GOF_SOURCE_DIR}/SequentialVectorTorusGOFAlgorithm.cpp
 
     ${GOF_SOURCE_DIR}/RandomFiller.cpp
     ${GOF_HEADERS_DIR}/RandomFiller.hpp

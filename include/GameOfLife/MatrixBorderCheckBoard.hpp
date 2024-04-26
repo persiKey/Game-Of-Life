@@ -1,16 +1,16 @@
-#ifndef ARRAY_CHECK_BOARD_HPP
-#define ARRAY_CHECK_BOARD_HPP
+#ifndef MATRIX_BORDER_CHECK_BOARD_HPP
+#define MATRIX_BORDER_CHECK_BOARD_HPP
 
 #include "ICheckBoard.hpp"
 
 namespace GameOfLife
 {
 
-class ArrayBorderCheckBoard : public IBorderCheckBoard
+class  MatrixBorderCheckBoard : public IBorderCheckBoard
 {
 public:
-    ArrayBorderCheckBoard(index_t length, index_t height);
-    ~ArrayBorderCheckBoard() override;
+    MatrixBorderCheckBoard(index_t length, index_t height);
+    ~MatrixBorderCheckBoard() override;
 
     virtual cell_t Get(index_t i, index_t j) const override;
     virtual void Set(index_t i, index_t j, cell_t value) override;
@@ -19,7 +19,7 @@ public:
     virtual void BigSet(index_t i, index_t j, cell_t value) override;    
 
 private:
-    cell_t* m_data;
+    cell_t** m_data;
 };
 
 }
