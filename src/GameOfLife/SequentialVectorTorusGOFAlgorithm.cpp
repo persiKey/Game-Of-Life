@@ -16,12 +16,12 @@ void SequentialVectorTorusGOFAlgorithm::Compute(std::shared_ptr<VectorBorderChec
         
         CellChecker(neighbors_counter, m_current_state->m_data[index++]);
         CellChecker(neighbors_counter, m_current_state->m_data[index++]);
-        CellChecker(neighbors_counter, m_current_state->m_data[index++]);
+        CellChecker(neighbors_counter, m_current_state->m_data[index]);
 
         index = i + m_current_state->DOWN_LEFT_INDEXING_OFFSET;
         CellChecker(neighbors_counter, m_current_state->m_data[index++]);
         CellChecker(neighbors_counter, m_current_state->m_data[index++]);
-        CellChecker(neighbors_counter, m_current_state->m_data[index++]);
+        CellChecker(neighbors_counter, m_current_state->m_data[index]);
 
         CellChecker(neighbors_counter, m_current_state->m_data[i-1]);
         CellChecker(neighbors_counter, m_current_state->m_data[i+1]);
