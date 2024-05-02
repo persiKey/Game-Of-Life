@@ -13,6 +13,10 @@ public:
     void Compute(std::shared_ptr<VectorBorderCheckBoard> m_current_state, 
                          std::shared_ptr<VectorBorderCheckBoard> m_next_state);
 
+    static void ComputeVectorChunk(index_t begin,
+                                   index_t end,
+                                   std::shared_ptr<VectorBorderCheckBoard> m_current_state,
+                                   std::shared_ptr<VectorBorderCheckBoard> m_next_state);
 };
 }
 #endif

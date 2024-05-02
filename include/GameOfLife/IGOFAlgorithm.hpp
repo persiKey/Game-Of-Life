@@ -18,7 +18,7 @@ public:
 
 protected:
     // This function should be in the common interface IGOFAlgorithm, but now there is no need in it
-    inline void CellChecker(uint8_t& neighbors_counter, cell_t cell)
+    inline static void CellChecker(uint8_t& neighbors_counter, cell_t cell)
     {
         neighbors_counter = neighbors_counter << ((static_cast<uint8_t>(cell) & static_cast<uint8_t>(ALIVE_FLAG)) >> 2);
     }

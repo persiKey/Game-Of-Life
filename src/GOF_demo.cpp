@@ -5,6 +5,7 @@
 #include "GameOfLife.hpp"
 #include "SequentialTorusGOFAlgorithm.hpp"
 #include "SequentialVectorTorusGOFAlgorithm.hpp"
+#include "ParallelTorusAlgorithm.hpp"
 #include "FromFileFiller.hpp"
 #include "RandomFiller.hpp"
 #include "VectorBorderCheckBoard.hpp"
@@ -26,9 +27,10 @@ int main(int argc, char *argv[])
 {
     using namespace GameOfLife;
 
-    GOF<VectorBorderCheckBoard, SequentialVectorTorusGOFAlgorithm> GameOfLife( 20000,
-                    70000,
-                    std::make_unique<RandomFiller>(0.3)
+    GOF<VectorBorderCheckBoard, ParallelTorusAlgorithm> GameOfLife( 20,
+                    8,
+                    //std::make_unique<RandomFiller>(0.3)
+                    std::make_unique<FromFileFiller>("F:/KPI/6th Sem/Parallel Computation Course Work/Game-Of-Life/GOF Patterns/glider.txt")
                     );
 
     std::cout << "Generated\n";
@@ -36,7 +38,7 @@ int main(int argc, char *argv[])
     while (true)
     {
         //system("cls");
-        //PrintCheckboard(GameOfLife.GetCheckBoard());
+        PrintCheckboard(GameOfLife.GetCheckBoard());
         std::cout << "Step " << GameOfLife.GetCurrentStep() << '\n';
         //std::getchar();
         using namespace std::chrono_literals;

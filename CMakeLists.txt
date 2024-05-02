@@ -44,6 +44,8 @@ set (SRC_FILES
     ${GOF_SOURCE_DIR}/FromFileFiller.cpp
     ${GOF_HEADERS_DIR}/FromFileFiller.hpp
 
+    ${GOF_SOURCE_DIR}ParallelTorusAlgorithm.cpp
+    ${GOF_HEADERS_DIR}ParallelTorusAlgorithm.hpp
 )
 
 add_library(${PROJECT_NAME} ${SRC_FILES})
