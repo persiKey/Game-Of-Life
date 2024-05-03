@@ -4,18 +4,19 @@
 
 #include <iostream>
 
+#include <functional>
+
 namespace GameOfLife
 {
 
 ParallelTaskExecutionPool::ParallelTaskExecutionPool(int threads_num)
 : m_threads_num(threads_num),
-  m_thread_task_index(0),
   m_thread_pool(threads_num),
   m_is_executing(false)
 {
     for (int i = 0; i < m_threads_num; ++i)
     {
-        m_thread_pool[i].task_thread = std::thread(&ParallelTaskExecutionPool::Worker, this,
+        m_thread_pool[i].executor_thread = std::thread(&ParallelTaskExecutionPool::Worker, this,
                                                    std::ref(m_thread_pool[i].is_finished));
     }
 }
@@ -26,14 +27,9 @@ ParallelTaskExecutionPool::~ParallelTaskExecutionPool()
     m_new_task.notify_all();
 }
 
-void ParallelTaskExecutionPool::Start(std::shared_ptr<VectorBorderCheckBoard>& current_state,
-    std::shared_ptr<VectorBorderCheckBoard>& next_state)
+void ParallelTaskExecutionPool::Start(std::unique_ptr<ITask> task)
 {
-    m_current_state = current_state;
-    m_next_state = next_state;
-    
-    m_thread_task_index = 0;
-    m_tasks_num = (m_current_state->Length() * m_current_state->Height()) / BLOCK_SIZE;
+    m_task = std::move(task);
 
     for (int i = 0; i < m_threads_num; ++i)
     {
@@ -54,7 +50,6 @@ void ParallelTaskExecutionPool::Join()
 
 void ParallelTaskExecutionPool::Worker(bool& is_finished)
 {
-    index_t current_index;
     while (true)
     {
         std::shared_lock lk(m_new_task_mutex);
@@ -65,20 +60,13 @@ void ParallelTaskExecutionPool::Worker(bool& is_finished)
             break;
         }
 
-        while ((current_index = ++m_thread_task_index) <= m_tasks_num)
-        {
-            //std::cout << current_index << std::endl;
-            const auto end = current_index * BLOCK_SIZE;
-            const auto begin = end - BLOCK_SIZE;
+        m_task->Execute();
 
-            SequentialVectorTorusGOFAlgorithm::ComputeVectorChunk(begin, end, m_current_state, m_next_state);
-        }
 
         is_finished = true;
         m_finish_task.notify_all();
     }
 }
-
 ParallelTorusAlgorithm::ParallelTorusAlgorithm()
 : ParallelTorusAlgorithm(20
     //std::max(1u, std::thread::hardware_concurrency() - 2)
@@ -86,6 +74,7 @@ ParallelTorusAlgorithm::ParallelTorusAlgorithm()
 {
     
 }
+
 
 ParallelTorusAlgorithm::ParallelTorusAlgorithm(int threads_num)
     : m_pool(threads_num)
@@ -98,7 +87,8 @@ void ParallelTorusAlgorithm::Compute(std::shared_ptr<VectorBorderCheckBoard>& m_
 {
     FillBorder(m_current_state);
 
-    m_pool.Start(m_current_state, m_next_state);
+    m_pool.Start(std::make_unique<ParralelComputeTask>(m_current_state, m_next_state));
+
     const auto tasks_num = (m_current_state->Length() * m_current_state->Height()) / BLOCK_SIZE;
     std::cout << tasks_num << std::endl;
     const auto end = m_current_state->Length() * m_current_state->Height();
@@ -114,5 +104,6 @@ void ParallelTorusAlgorithm::Compute(std::shared_ptr<IBorderCheckBoard> m_curren
 {
     std::cout << "I shouldn't be printed\n";
 }
+
 
 }

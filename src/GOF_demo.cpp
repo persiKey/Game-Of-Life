@@ -28,10 +28,10 @@ int main(int argc, char *argv[])
     using namespace GameOfLife;
     // SequentialVectorTorusGOFAlgorithm
     // ParallelTorusAlgorithm
-    GOF<VectorBorderCheckBoard, SequentialVectorTorusGOFAlgorithm> GameOfLife( 5,
-                    5,
+    GOF<VectorBorderCheckBoard, ParallelTorusAlgorithm> GameOfLife( 10,
+                    10,
                     //std::make_unique<RandomFiller>(0.3)
-                    std::make_unique<FromFileFiller>("F:/KPI/6th Sem/Parallel Computation Course Work/Game-Of-Life/GOF Patterns/diagonal.txt")
+                    std::make_unique<FromFileFiller>("F:/KPI/6th Sem/Parallel Computation Course Work/Game-Of-Life/GOF Patterns/glider.txt")
                     );
 
     std::cout << "Generated\n";
