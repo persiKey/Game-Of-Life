@@ -2,6 +2,7 @@
 
 #include <utility>
 
+#include <iostream>
 
 namespace GameOfLife
 {
@@ -58,14 +59,19 @@ void ParallelTaskExecutionPool::Worker(bool& is_finished)
     {
         std::unique_lock lk(m_new_task_mutex);
         m_new_task.wait(lk);
+        std::cout << "Worker start\n";
+        auto begin = std::chrono::system_clock::now();
+        using namespace std::chrono_literals;
 
+        std::this_thread::sleep_for(200ms);
         if(!m_is_executing)
         {
             break;
         }
 
-        while ((current_index = ++m_thread_task_index) < m_tasks_num)
+        while ((current_index = ++m_thread_task_index) <= m_tasks_num)
         {
+            //std::cout << current_index << std::endl;
             const auto end = current_index * BLOCK_SIZE;
             const auto begin = end - BLOCK_SIZE;
 
@@ -74,11 +80,14 @@ void ParallelTaskExecutionPool::Worker(bool& is_finished)
 
         is_finished = true;
         m_finish_task.notify_all();
+
+        auto end = std::chrono::system_clock::now();
+        std::cout << "Worker finish. Duration: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << " ms \n";
     }
 }
 
 ParallelTorusAlgorithm::ParallelTorusAlgorithm()
-: ParallelTorusAlgorithm(3
+: ParallelTorusAlgorithm(8
     //std::max(1u, std::thread::hardware_concurrency() - 2)
     )
 {
@@ -97,14 +106,20 @@ void ParallelTorusAlgorithm::Compute(std::shared_ptr<VectorBorderCheckBoard>& m_
     FillBorder(m_current_state);
 
     m_pool.Start(m_current_state, m_next_state);
-
     const auto tasks_num = (m_current_state->Length() * m_current_state->Height()) / BLOCK_SIZE;
+    std::cout << tasks_num << std::endl;
     const auto end = m_current_state->Length() * m_current_state->Height();
     const auto begin = tasks_num * BLOCK_SIZE;
 
-    ComputeVectorChunk(begin, end, m_current_state, m_next_state);
+    SequentialVectorTorusGOFAlgorithm::ComputeVectorChunk(begin, end, m_current_state, m_next_state);
     
     m_pool.Join();
+}
+
+void ParallelTorusAlgorithm::Compute(std::shared_ptr<IBorderCheckBoard> m_current_state,
+    std::shared_ptr<IBorderCheckBoard> m_next_state)
+{
+    std::cout << "I shouldn't be printed\n";
 }
 
 }

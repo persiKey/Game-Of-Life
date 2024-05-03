@@ -13,7 +13,7 @@
 namespace GameOfLife
 {
     
-inline index_t BLOCK_SIZE = 10;
+inline index_t BLOCK_SIZE = 1024*1024;
 
 class ParallelTaskExecutionPool
 {
@@ -49,7 +49,7 @@ private:
     std::shared_ptr<VectorBorderCheckBoard> m_next_state;
 };
 
-class ParallelTorusAlgorithm : public SequentialVectorTorusGOFAlgorithm
+class ParallelTorusAlgorithm : public IBorderGOFAlgorithm
 {
 public:
     ParallelTorusAlgorithm();
@@ -58,7 +58,9 @@ public:
 
     void Compute(std::shared_ptr<VectorBorderCheckBoard>& m_current_state,
                  std::shared_ptr<VectorBorderCheckBoard>& m_next_state);
-    
+
+    virtual void Compute(std::shared_ptr<IBorderCheckBoard> m_current_state,
+        std::shared_ptr<IBorderCheckBoard> m_next_state) override;
 private:
     ParallelTaskExecutionPool m_pool;
 };
