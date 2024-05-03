@@ -57,13 +57,9 @@ void ParallelTaskExecutionPool::Worker(bool& is_finished)
     index_t current_index;
     while (true)
     {
-        std::unique_lock lk(m_new_task_mutex);
+        std::shared_lock lk(m_new_task_mutex);
         m_new_task.wait(lk);
-        std::cout << "Worker start\n";
-        auto begin = std::chrono::system_clock::now();
-        using namespace std::chrono_literals;
 
-        std::this_thread::sleep_for(200ms);
         if(!m_is_executing)
         {
             break;
@@ -80,14 +76,11 @@ void ParallelTaskExecutionPool::Worker(bool& is_finished)
 
         is_finished = true;
         m_finish_task.notify_all();
-
-        auto end = std::chrono::system_clock::now();
-        std::cout << "Worker finish. Duration: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << " ms \n";
     }
 }
 
 ParallelTorusAlgorithm::ParallelTorusAlgorithm()
-: ParallelTorusAlgorithm(8
+: ParallelTorusAlgorithm(20
     //std::max(1u, std::thread::hardware_concurrency() - 2)
     )
 {

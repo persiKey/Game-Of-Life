@@ -1,11 +1,23 @@
 #include "SequentialVectorTorusGOFAlgorithm.hpp"
-
+#include <iostream>
 namespace GameOfLife
 {
 void SequentialVectorTorusGOFAlgorithm::Compute(std::shared_ptr<VectorBorderCheckBoard> m_current_state, 
                                                 std::shared_ptr<VectorBorderCheckBoard> m_next_state)
 {
-    FillBorder(m_current_state);
+    FillRowsChunk(0, m_current_state->Length(), m_current_state);
+    FillColumnsChunk(0, m_current_state->Height(), m_current_state);
+    FillCorners(m_current_state);
+    
+    for (GameOfLife::index_t j = 0; j < m_current_state->BigHeight(); ++j)
+    {
+        for (GameOfLife::index_t i = 0; i < m_current_state->BigLength(); ++i)
+        {
+            std::cout << ((m_current_state->BigGet(i, j) == GameOfLife::cell_t::ALIVE) ? '*' : '.');
+        }
+        std::cout << '\n';
+    }
+
     
     ComputeVectorChunk(0, m_current_state->Length() * m_current_state->Height(), m_current_state, m_next_state);
 }
@@ -40,5 +52,61 @@ void SequentialVectorTorusGOFAlgorithm::ComputeVectorChunk(index_t begin, index_
         m_next_state->m_data[i] = 
                             (neighbors_counter & static_cast<uint8_t>(data[i])) ? cell_t::ALIVE : cell_t::DEAD;  
     }    
+}
+
+void SequentialVectorTorusGOFAlgorithm::FillCorners(std::shared_ptr<VectorBorderCheckBoard> m_current_state)
+{
+    const auto offset = m_current_state->m_big_checkboard_length;
+    auto big_top_left_corner = m_current_state->m_data;
+    auto big_top_right_corner = big_top_left_corner + offset - 1;
+
+    auto big_bottom_right_corner = big_top_left_corner + m_current_state->m_big_checkboard_height * offset - 1;
+    auto big_bottom_left_corner = big_bottom_right_corner - offset + 1;
+
+    auto small_top_left_corner = big_top_left_corner + m_current_state->SMALL_TO_BIG_INDEXING_OFFSET;
+    auto small_top_right_corner = small_top_left_corner + m_current_state->m_checkboard_length - 1;
+
+    auto small_bottom_right_corner = big_bottom_left_corner - 2;
+    auto small_bottom_left_corner = small_bottom_right_corner - m_current_state->m_checkboard_length + 1;
+    
+
+    *big_top_left_corner = *small_bottom_right_corner;
+    *big_top_right_corner = *small_bottom_left_corner;
+    *big_bottom_left_corner = *small_top_right_corner;
+    *big_bottom_right_corner = *small_top_left_corner;
+}
+
+void SequentialVectorTorusGOFAlgorithm::FillRowsChunk(index_t begin, index_t end, std::shared_ptr<VectorBorderCheckBoard> m_current_state)
+{
+    const auto offset = m_current_state->m_big_checkboard_length;
+    auto first_big_row_chunk_begin = m_current_state->m_data + 1 + begin;
+    auto first_small_row_chunk_begin = first_big_row_chunk_begin + offset;
+    auto last_big_row_chunk_begin = first_big_row_chunk_begin + (offset - 1) * m_current_state->m_big_checkboard_height;
+    auto last_small_row_chunk_begin = last_big_row_chunk_begin - offset;
+    auto size = (end - begin) * sizeof(cell_t);
+
+    memcpy(first_big_row_chunk_begin, last_small_row_chunk_begin, size);
+    memcpy(last_big_row_chunk_begin, first_small_row_chunk_begin, size);
+}
+
+void SequentialVectorTorusGOFAlgorithm::FillColumnsChunk(index_t begin, index_t end, std::shared_ptr<VectorBorderCheckBoard> m_current_state)
+{
+    const auto offset = m_current_state->m_big_checkboard_length;
+    auto left_big_colummn_chunk_begin = m_current_state->m_data + (begin + 1) * offset;
+    auto left_small_column_chunk_begin = left_big_colummn_chunk_begin + 1;
+    auto right_big_colummn_chunk_begin = left_big_colummn_chunk_begin + offset - 1;
+    auto right_small_column_chunk_begin = right_big_colummn_chunk_begin - 1;
+    auto size = end - begin;
+
+    for (index_t i = 0; i < size; ++i)
+    {
+        *left_big_colummn_chunk_begin = *right_small_column_chunk_begin;
+        *right_big_colummn_chunk_begin = *left_small_column_chunk_begin;
+
+        left_big_colummn_chunk_begin += offset;
+        left_small_column_chunk_begin += offset;
+        right_big_colummn_chunk_begin += offset;
+        right_small_column_chunk_begin += offset;
+    }
 }
 }

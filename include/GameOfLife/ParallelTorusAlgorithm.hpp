@@ -9,11 +9,13 @@
 #include <atomic>
 #include <vector>
 #include <condition_variable>
+#include <shared_mutex>
 
 namespace GameOfLife
 {
-    
-inline index_t BLOCK_SIZE = 1024*1024;
+ 
+inline constexpr index_t L1_CACHE_SIZE = 1024 * 380;
+inline constexpr index_t BLOCK_SIZE = L1_CACHE_SIZE;
 
 class ParallelTaskExecutionPool
 {
@@ -38,8 +40,8 @@ private:
     std::atomic<index_t> m_thread_task_index;
     
     volatile bool m_is_executing;
-    std::mutex m_new_task_mutex;
-    std::condition_variable m_new_task;
+    std::shared_mutex m_new_task_mutex;
+    std::condition_variable_any m_new_task;
 
     std::mutex m_finish_mutex;
     std::condition_variable m_finish_task;

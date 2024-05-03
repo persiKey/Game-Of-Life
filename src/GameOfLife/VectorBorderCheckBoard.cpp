@@ -1,4 +1,5 @@
 #include "VectorBorderCheckBoard.hpp"
+#include <algorithm>
 
 namespace GameOfLife
 {
@@ -8,7 +9,9 @@ VectorBorderCheckBoard::VectorBorderCheckBoard(index_t length, index_t height)
   UP_LEFT_INDEXING_OFFSET(m_big_checkboard_length + 1),
   DOWN_LEFT_INDEXING_OFFSET(m_big_checkboard_length - 1)
 {
-    m_data = new cell_t[m_big_checkboard_height * m_big_checkboard_length]{cell_t::DEAD};
+    const auto size = m_big_checkboard_height * m_big_checkboard_length;
+    m_data = new cell_t[size];
+    std::fill_n(m_data, size, cell_t::DEAD);
 }
 
 VectorBorderCheckBoard::~VectorBorderCheckBoard()
