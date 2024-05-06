@@ -28,8 +28,8 @@ int main(int argc, char *argv[])
     using namespace GameOfLife;
     // SequentialVectorTorusGOFAlgorithm
     // ParallelTorusAlgorithm
-    GOF<VectorBorderCheckBoard, ParallelTorusAlgorithm> GameOfLife( 10,
-                    10,
+    GOF<VectorBorderCheckBoard, ParallelTorusAlgorithm> GameOfLife( 20000,
+                    70000,
                     //std::make_unique<RandomFiller>(0.3)
                     std::make_unique<FromFileFiller>("F:/KPI/6th Sem/Parallel Computation Course Work/Game-Of-Life/GOF Patterns/glider.txt")
                     );
@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
     while (true)
     {
         //system("cls");
-        PrintCheckboard(GameOfLife.GetCheckBoard());
+        //PrintCheckboard(GameOfLife.GetCheckBoard());
         std::cout << "Step " << GameOfLife.GetCurrentStep() << '\n';
         //std::getchar();
         using namespace std::chrono_literals;

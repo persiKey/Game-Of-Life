@@ -2,26 +2,25 @@
 #define PARALLEL_TORUS_ALGORITHM
 
 #include "IGOFAlgorithm.hpp"
-#include "SequentialVectorTorusGOFAlgorithm.hpp"
+
 #include "VectorBorderCheckBoard.hpp"
 
 #include <thread>
 #include <atomic>
 #include <vector>
-#include <condition_variable>
-#include <shared_mutex>
+#include <semaphore>
 
 namespace GameOfLife
 {
  
-inline constexpr index_t L1_CACHE_SIZE = 1024 * 380;
-inline constexpr index_t BLOCK_SIZE = L1_CACHE_SIZE;
+inline constexpr index_t L1_CACHE_SIZE = 1024 * 384;
 
 class ParallelTaskExecutionPool
 {
 public:
-    struct ITask
+    class ITask
     {
+    public:
         virtual ~ITask() = default;
         virtual void Execute() = 0;
     };
@@ -32,58 +31,64 @@ public:
     void Start(std::unique_ptr<ITask> task);
     void Join();
 private:
-    void Worker(bool& is_finished);
+    void Worker();
     
     int m_threads_num;
     struct Executor
     {
         std::thread executor_thread;
-        bool is_finished;
     };
 
-
     std::vector<Executor> m_thread_pool;
-        
-    volatile bool m_is_executing;
-    std::shared_mutex m_new_task_mutex;
-    std::condition_variable_any m_new_task;
+       
+    std::counting_semaphore<> m_working_threads;
+    std::counting_semaphore<> m_finished_threads;
 
-    std::mutex m_finish_mutex;
-    std::condition_variable m_finish_task;
+    std::atomic_bool m_is_executing;
 
     std::unique_ptr<ITask> m_task;
 };
 
-struct ParralelComputeTask : public ParallelTaskExecutionPool::ITask
+class ParralelComputeTask : public ParallelTaskExecutionPool::ITask
 {
-    std::atomic<index_t> m_thread_task_index;
+public:
+    ParralelComputeTask(std::shared_ptr<VectorBorderCheckBoard> current_state,
+        std::shared_ptr<VectorBorderCheckBoard> next_state, int tasks_num, index_t task_block);
 
-    int m_tasks_num;
+    virtual void Execute() override;
+
+private:
     std::shared_ptr<VectorBorderCheckBoard> m_current_state;
     std::shared_ptr<VectorBorderCheckBoard> m_next_state;
+    int m_tasks_num;
+    index_t m_task_block;
+    std::atomic<index_t> m_thread_task_index;
+};
 
-    ParralelComputeTask(std::shared_ptr<VectorBorderCheckBoard> current_state,
-        std::shared_ptr<VectorBorderCheckBoard> next_state)
-        : m_thread_task_index(0),
-        m_current_state(std::move(current_state)),
-        m_next_state(std::move(next_state))
-    {
-        m_tasks_num = (m_current_state->Length() * m_current_state->Height()) / BLOCK_SIZE;
-    }
+class ParralelFillRowTask : public ParallelTaskExecutionPool::ITask
+{
+public:
+    ParralelFillRowTask(std::shared_ptr<VectorBorderCheckBoard> current_state, int tasks_num, index_t task_block);
+    virtual void Execute() override;
 
-    virtual void Execute() override
-    {
-        index_t current_index;
-        while ((current_index = ++m_thread_task_index) <= m_tasks_num)
-        {
-            //std::cout << current_index << std::endl;
-            const auto end = current_index * BLOCK_SIZE;
-            const auto begin = end - BLOCK_SIZE;
+private:
+    std::shared_ptr<VectorBorderCheckBoard> m_current_state;
+    int m_tasks_num;
+    index_t m_task_block;
+    std::atomic<index_t> m_task_index;
+};
 
-            SequentialVectorTorusGOFAlgorithm::ComputeVectorChunk(begin, end, m_current_state, m_next_state);
-        }
-    }
+class ParralelFillColumnTask : public ParallelTaskExecutionPool::ITask
+{
+public:
+    ParralelFillColumnTask(std::shared_ptr<VectorBorderCheckBoard> current_state, int tasks_num, index_t task_block);
+    virtual void Execute() override;
 
+private:
+    std::shared_ptr<VectorBorderCheckBoard> m_current_state;
+    int m_tasks_num;
+    index_t m_task_block;
+    std::atomic<index_t> m_task_index;
 };
 
 class ParallelTorusAlgorithm : public IBorderGOFAlgorithm
@@ -100,11 +105,11 @@ public:
         std::shared_ptr<IBorderCheckBoard> m_next_state) override;
 private:
     ParallelTaskExecutionPool m_pool;
+    int m_threads_num;
 };
 
 
 
 } // namespace GameOfLife
-
 
 #endif

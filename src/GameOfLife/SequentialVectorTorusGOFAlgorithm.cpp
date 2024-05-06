@@ -2,24 +2,18 @@
 #include <iostream>
 namespace GameOfLife
 {
+
+    std::atomic_int64_t SequentialVectorTorusGOFAlgorithm::counter = 0;
 void SequentialVectorTorusGOFAlgorithm::Compute(std::shared_ptr<VectorBorderCheckBoard> m_current_state, 
                                                 std::shared_ptr<VectorBorderCheckBoard> m_next_state)
 {
+    counter = 0;
     FillRowsChunk(0, m_current_state->Length(), m_current_state);
     FillColumnsChunk(0, m_current_state->Height(), m_current_state);
     FillCorners(m_current_state);
-    
-    for (GameOfLife::index_t j = 0; j < m_current_state->BigHeight(); ++j)
-    {
-        for (GameOfLife::index_t i = 0; i < m_current_state->BigLength(); ++i)
-        {
-            std::cout << ((m_current_state->BigGet(i, j) == GameOfLife::cell_t::ALIVE) ? '*' : '.');
-        }
-        std::cout << '\n';
-    }
-
-    
+        
     ComputeVectorChunk(0, m_current_state->Length() * m_current_state->Height(), m_current_state, m_next_state);
+    std::cout << "Counter: " << counter << std::endl;
 }
 
 void SequentialVectorTorusGOFAlgorithm::ComputeVectorChunk(index_t begin, index_t end,
@@ -51,6 +45,7 @@ void SequentialVectorTorusGOFAlgorithm::ComputeVectorChunk(index_t begin, index_
 
         m_next_state->m_data[i] = 
                             (neighbors_counter & static_cast<uint8_t>(data[i])) ? cell_t::ALIVE : cell_t::DEAD;  
+        //counter++;
     }    
 }
 

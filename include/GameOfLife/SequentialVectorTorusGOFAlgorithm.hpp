@@ -27,6 +27,8 @@ public:
     static void FillColumnsChunk(index_t begin,
                                  index_t end,
                                  std::shared_ptr<VectorBorderCheckBoard> m_current_state);
+
+    static std::atomic_int64_t counter;
 };
 }
 #endif
