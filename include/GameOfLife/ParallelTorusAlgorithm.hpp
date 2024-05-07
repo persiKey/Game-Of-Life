@@ -13,7 +13,7 @@
 namespace GameOfLife
 {
  
-inline constexpr index_t L1_CACHE_SIZE = 1024 * 384;
+inline constexpr index_t CHUNK_SIZE = 1024 * 1;
 
 class ParallelTaskExecutionPool
 {

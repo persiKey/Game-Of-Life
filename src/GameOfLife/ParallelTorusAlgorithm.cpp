@@ -128,9 +128,7 @@ void ParralelFillColumnTask::Execute()
 }
 
 ParallelTorusAlgorithm::ParallelTorusAlgorithm()
-: ParallelTorusAlgorithm(200
-    //std::max(1u, std::thread::hardware_concurrency() - 2)
-    )
+: ParallelTorusAlgorithm(std::max(1u, std::thread::hardware_concurrency() - 2))
 {
     
 }
@@ -152,11 +150,11 @@ struct task_sizing_t
 task_sizing_t GetSizing(index_t task_size, int num_threads)
 {
     task_sizing_t result{ 0 };
-    const int number_of_whole_parts = task_size / L1_CACHE_SIZE;
+    const int number_of_whole_parts = task_size / CHUNK_SIZE;
 
     const int number_of_whole_parts_per_thread = std::max(number_of_whole_parts / (num_threads + 1), 1);
 
-    result.block_size = number_of_whole_parts_per_thread * L1_CACHE_SIZE;
+    result.block_size = number_of_whole_parts_per_thread * CHUNK_SIZE;
 
     result.tasks_num = std::max<int64_t>(task_size / result.block_size - 1, 0);
     result.last_task_begin = result.tasks_num * result.block_size;
