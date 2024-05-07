@@ -76,7 +76,7 @@ void SequentialVectorTorusGOFAlgorithm::FillRowsChunk(index_t begin, index_t end
     const auto offset = m_current_state->m_big_checkboard_length;
     auto first_big_row_chunk_begin = m_current_state->m_data + 1 + begin;
     auto first_small_row_chunk_begin = first_big_row_chunk_begin + offset;
-    auto last_big_row_chunk_begin = first_big_row_chunk_begin + (offset - 1) * m_current_state->m_big_checkboard_height;
+    auto last_big_row_chunk_begin = first_big_row_chunk_begin + offset * (m_current_state->m_big_checkboard_height - 1);
     auto last_small_row_chunk_begin = last_big_row_chunk_begin - offset;
     auto size = (end - begin) * sizeof(cell_t);
 
