@@ -4,8 +4,8 @@ namespace GameOfLife
 {
 
     std::atomic_int64_t SequentialVectorTorusGOFAlgorithm::counter = 0;
-void SequentialVectorTorusGOFAlgorithm::Compute(std::shared_ptr<VectorBorderCheckBoard> m_current_state, 
-                                                std::shared_ptr<VectorBorderCheckBoard> m_next_state)
+void SequentialVectorTorusGOFAlgorithm::Compute(std::shared_ptr<VectorBorderCheckBoard>& m_current_state, 
+                                                std::shared_ptr<VectorBorderCheckBoard>& m_next_state)
 {
     counter = 0;
     FillRowsChunk(0, m_current_state->Length(), m_current_state);
@@ -17,7 +17,7 @@ void SequentialVectorTorusGOFAlgorithm::Compute(std::shared_ptr<VectorBorderChec
 }
 
 void SequentialVectorTorusGOFAlgorithm::ComputeVectorChunk(index_t begin, index_t end,
-    std::shared_ptr<VectorBorderCheckBoard> m_current_state, std::shared_ptr<VectorBorderCheckBoard> m_next_state)
+    std::shared_ptr<VectorBorderCheckBoard>& m_current_state, std::shared_ptr<VectorBorderCheckBoard>& m_next_state)
 {
     --end;
     const auto i_begin = (begin / m_current_state->Length()) * m_current_state->BigLength() + begin % m_current_state->Length() + m_current_state->SMALL_TO_BIG_INDEXING_OFFSET;
@@ -49,7 +49,7 @@ void SequentialVectorTorusGOFAlgorithm::ComputeVectorChunk(index_t begin, index_
     }    
 }
 
-void SequentialVectorTorusGOFAlgorithm::FillCorners(std::shared_ptr<VectorBorderCheckBoard> m_current_state)
+void SequentialVectorTorusGOFAlgorithm::FillCorners(std::shared_ptr<VectorBorderCheckBoard>& m_current_state)
 {
     const auto offset = m_current_state->m_big_checkboard_length;
     auto big_top_left_corner = m_current_state->m_data;
@@ -71,7 +71,7 @@ void SequentialVectorTorusGOFAlgorithm::FillCorners(std::shared_ptr<VectorBorder
     *big_bottom_right_corner = *small_top_left_corner;
 }
 
-void SequentialVectorTorusGOFAlgorithm::FillRowsChunk(index_t begin, index_t end, std::shared_ptr<VectorBorderCheckBoard> m_current_state)
+void SequentialVectorTorusGOFAlgorithm::FillRowsChunk(index_t begin, index_t end, std::shared_ptr<VectorBorderCheckBoard>& m_current_state)
 {
     const auto offset = m_current_state->m_big_checkboard_length;
     auto first_big_row_chunk_begin = m_current_state->m_data + 1 + begin;
@@ -84,7 +84,7 @@ void SequentialVectorTorusGOFAlgorithm::FillRowsChunk(index_t begin, index_t end
     memcpy(last_big_row_chunk_begin, first_small_row_chunk_begin, size);
 }
 
-void SequentialVectorTorusGOFAlgorithm::FillColumnsChunk(index_t begin, index_t end, std::shared_ptr<VectorBorderCheckBoard> m_current_state)
+void SequentialVectorTorusGOFAlgorithm::FillColumnsChunk(index_t begin, index_t end, std::shared_ptr<VectorBorderCheckBoard>& m_current_state)
 {
     const auto offset = m_current_state->m_big_checkboard_length;
     auto left_big_colummn_chunk_begin = m_current_state->m_data + (begin + 1) * offset;

@@ -91,18 +91,16 @@ private:
     std::atomic<index_t> m_task_index;
 };
 
-class ParallelTorusAlgorithm : public IBorderGOFAlgorithm
+class ParallelTorusAlgorithm : public IVectorBorderGOFAlgorithm
 {
 public:
     ParallelTorusAlgorithm();
     ParallelTorusAlgorithm(int threads_num);
-    ~ParallelTorusAlgorithm() override = default;
+    ~ParallelTorusAlgorithm() = default;
 
-    void Compute(std::shared_ptr<VectorBorderCheckBoard>& m_current_state,
-                 std::shared_ptr<VectorBorderCheckBoard>& m_next_state);
+    virtual void Compute(std::shared_ptr<VectorBorderCheckBoard>& m_current_state,
+                 std::shared_ptr<VectorBorderCheckBoard>& m_next_state) override;
 
-    virtual void Compute(std::shared_ptr<IBorderCheckBoard> m_current_state,
-        std::shared_ptr<IBorderCheckBoard> m_next_state) override;
 private:
     ParallelTaskExecutionPool m_pool;
     int m_threads_num;

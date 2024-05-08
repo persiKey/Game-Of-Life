@@ -54,8 +54,10 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${GOF_HEADERS_DIR})
 set(DEMO ${PROJECT_NAME}_DEMO)
 add_executable(${DEMO} ${CMAKE_CURRENT_SOURCE_DIR}/src/GOF_demo.cpp)
 target_link_libraries(${DEMO} PRIVATE ${PROJECT_NAME})
-target_include_directories(${PROJECT_NAME} PUBLIC ${GOF_PUBLIC_HEADERS_DIR})
 
+set(BENCHMARK ${PROJECT_NAME}_BENCHMARK)
+add_executable(${BENCHMARK} ${CMAKE_CURRENT_SOURCE_DIR}/src/GOF_benchmark.cpp)
+target_link_libraries(${BENCHMARK} PRIVATE ${PROJECT_NAME})
 
 include(FetchContent)
 FetchContent_Declare(SFML

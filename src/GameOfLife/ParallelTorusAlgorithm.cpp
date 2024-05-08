@@ -187,13 +187,6 @@ void ParallelTorusAlgorithm::Compute(std::shared_ptr<VectorBorderCheckBoard>& m_
     SequentialVectorTorusGOFAlgorithm::ComputeVectorChunk(compute_sizing.last_task_begin, compute_sizing.last_task_end, m_current_state, m_next_state);
     
     m_pool.Join();
-    std::cout << "Counter: " << SequentialVectorTorusGOFAlgorithm::counter << std::endl;
-}
-
-void ParallelTorusAlgorithm::Compute(std::shared_ptr<IBorderCheckBoard> m_current_state,
-    std::shared_ptr<IBorderCheckBoard> m_next_state)
-{
-
 }
 
 }
