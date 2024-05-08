@@ -68,7 +68,6 @@ FetchContent_MakeAvailable(SFML)
 set(GRAPHIC_DEMO ${PROJECT_NAME}_GRAPHIC_DEMO)
 add_executable(${GRAPHIC_DEMO} ${CMAKE_CURRENT_SOURCE_DIR}/src/GOF_graphic_demo.cpp)
 target_link_libraries(${GRAPHIC_DEMO} PRIVATE ${PROJECT_NAME})
-target_include_directories(${PROJECT_NAME} PUBLIC ${GOF_PUBLIC_HEADERS_DIR})
 target_link_libraries(${GRAPHIC_DEMO} PRIVATE sfml-graphics)
 
 if(WIN32)

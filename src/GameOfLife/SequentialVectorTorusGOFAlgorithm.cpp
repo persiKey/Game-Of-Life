@@ -7,13 +7,13 @@ namespace GameOfLife
 void SequentialVectorTorusGOFAlgorithm::Compute(std::shared_ptr<VectorBorderCheckBoard>& m_current_state, 
                                                 std::shared_ptr<VectorBorderCheckBoard>& m_next_state)
 {
-    counter = 0;
+    //counter = 0;
     FillRowsChunk(0, m_current_state->Length(), m_current_state);
     FillColumnsChunk(0, m_current_state->Height(), m_current_state);
     FillCorners(m_current_state);
         
     ComputeVectorChunk(0, m_current_state->Length() * m_current_state->Height(), m_current_state, m_next_state);
-    std::cout << "Counter: " << counter << std::endl;
+    //std::cout << "Counter: " << counter << std::endl;
 }
 
 void SequentialVectorTorusGOFAlgorithm::ComputeVectorChunk(index_t begin, index_t end,
