@@ -133,8 +133,8 @@ ParallelTorusAlgorithm::ParallelTorusAlgorithm()
 }
 
 ParallelTorusAlgorithm::ParallelTorusAlgorithm(int threads_num)
-    : m_pool(threads_num), 
-    m_threads_num(threads_num)
+    : m_pool(threads_num - 1), 
+    m_threads_num(threads_num - 1)
 {
 
 }
