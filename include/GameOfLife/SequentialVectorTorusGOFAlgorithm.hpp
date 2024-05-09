@@ -4,7 +4,7 @@
 #include "IGOFAlgorithm.hpp"
 #include "VectorBorderCheckBoard.hpp"
 //#include "SequentialTorusGOFAlgorithm.hpp"
-
+#include <atomic>
 namespace GameOfLife
 {
 

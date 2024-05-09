@@ -1,7 +1,6 @@
 #include "ParallelTorusAlgorithm.hpp"
 #include "SequentialVectorTorusGOFAlgorithm.hpp"
 
-#include <iostream>
 namespace GameOfLife
 {
 
@@ -166,7 +165,6 @@ task_sizing_t GetSizing(index_t task_size, int num_threads)
 void ParallelTorusAlgorithm::Compute(std::shared_ptr<VectorBorderCheckBoard>& m_current_state,
                                      std::shared_ptr<VectorBorderCheckBoard>& m_next_state)
 {
-    SequentialVectorTorusGOFAlgorithm::counter = 0;
     auto row_sizing = GetSizing(m_current_state->Length(), m_threads_num);
 
     m_pool.Start(std::make_unique<ParralelFillRowTask>(m_current_state, row_sizing.tasks_num, row_sizing.block_size));

@@ -39,15 +39,15 @@ int main(int argc, char *argv[])
     while (true)
     {
         //system("cls");
-        //PrintCheckboard(GameOfLife.GetCheckBoard());
         std::cout << "Step " << GameOfLife.GetCurrentStep() << '\n';
         //std::getchar();
         using namespace std::chrono_literals;
-        std::this_thread::sleep_for(500ms);
         auto begin = std::chrono::system_clock::now();
         GameOfLife.NextStep();
         auto end = std::chrono::system_clock::now();
         std::cout << "Duration: " << std::chrono::duration_cast<std::chrono::milliseconds >(end - begin).count() << " ms \n";
+        std::this_thread::sleep_for(2500ms);
+        PrintCheckboard(GameOfLife.GetCheckBoard());
     }
 
     return 0;
