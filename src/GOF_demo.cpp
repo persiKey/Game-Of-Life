@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
         auto end = std::chrono::system_clock::now();
         std::cout << "Duration: " << std::chrono::duration_cast<std::chrono::milliseconds >(end - begin).count() << " ms \n";
         std::this_thread::sleep_for(2500ms);
-        PrintCheckboard(GameOfLife.GetCheckBoard());
+        //PrintCheckboard(GameOfLife.GetCheckBoard());
     }
 
     return 0;

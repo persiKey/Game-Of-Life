@@ -15,7 +15,6 @@ set(GOF_HEADERS_DIR
     ${CMAKE_CURRENT_SOURCE_DIR}/include/GameOfLife/
 )
 
-
 set (SRC_FILES 
     ${GOF_HEADERS_DIR}/GameOfLife.hpp
 

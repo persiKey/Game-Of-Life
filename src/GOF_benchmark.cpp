@@ -19,12 +19,15 @@ inline constexpr size_t MAXIMUM_MATRIX_SIZE = 1024ull * 1024ull * 1024ull * 4ull
 
 inline constexpr size_t CELL_WIDTH = 12;
 inline constexpr size_t FIRST_COLUMN_WIDHT = 12;
+inline constexpr size_t MEAN_WIDTH = 6;
+inline constexpr size_t DEVIATION_WIDHT = 5;
 
 inline constexpr char FILL = ' ';
-inline constexpr char FIRST_COLUMN_SEPARATOR = ':';
+inline constexpr char FIRST_COLUMN_SEPARATOR = ',';
 inline constexpr char FIRST_ROW_SEPARATOR = '-';
-inline constexpr char CELL_SEPARATOR = '|';
+inline constexpr char CELL_SEPARATOR = ',';
 inline constexpr char INTERSECT = '+';
+inline constexpr auto REPORT_FILENAME = "report.csv";
 
 struct measure_t
 {
@@ -114,37 +117,42 @@ public:
     static void Measure(std::initializer_list<algorithm_info_t> algorithms, std::vector<index_t> sizes)
     {
         using std::cout;
+        std::ofstream report_file(REPORT_FILENAME);
+        std::stringstream buffer;
+
         for (auto& algorithm : algorithms)
         {
-            cout << algorithm.name << '\n';
-
-            cout << std::setfill(FILL);
-            cout << std::setw(FIRST_COLUMN_WIDHT) << "" << FIRST_COLUMN_SEPARATOR;
+            
+            buffer << algorithm.name << '\n';
+            buffer << std::setfill(FILL);
+            buffer << std::setw(FIRST_COLUMN_WIDHT) << "" << FIRST_COLUMN_SEPARATOR;
             for ( const auto lenght : sizes )
             {
-                cout << std::setw(CELL_WIDTH) << lenght << CELL_SEPARATOR;
+                buffer << std::setw(CELL_WIDTH) << lenght << CELL_SEPARATOR;
             }
-            cout << '\n';
+            buffer << '\n';
 
-            cout << std::setfill(FIRST_ROW_SEPARATOR) << std::setw(FIRST_COLUMN_WIDHT) << "" <<  INTERSECT;
+            buffer << std::setfill(FIRST_ROW_SEPARATOR) << std::setw(FIRST_COLUMN_WIDHT) << "" <<  INTERSECT;
             for ( const auto lenght : sizes )
             {
-                cout << std::setw(CELL_WIDTH) << "" << FIRST_ROW_SEPARATOR;
+                buffer << std::setw(CELL_WIDTH) << "" << FIRST_ROW_SEPARATOR;
             }
-            cout << '\n';
+            buffer << '\n';
 
-            cout << std::setfill(FILL);
+            buffer << std::setfill(FILL);
             for ( const auto height : sizes )
             {
-                cout << std::setw(FIRST_COLUMN_WIDHT) << height << FIRST_COLUMN_SEPARATOR;
+                buffer << std::setw(FIRST_COLUMN_WIDHT) << height << FIRST_COLUMN_SEPARATOR;
                 for ( const auto lenght : sizes )
                 {
-                    cout << std::setw(CELL_WIDTH) << ((height * lenght <= MAXIMUM_MATRIX_SIZE) &&  (height * lenght >= MINIMUM_MATRIX_SIZE)  ? height * lenght : -0) << CELL_SEPARATOR;
+                    buffer << std::setw(CELL_WIDTH) << ((height * lenght <= MAXIMUM_MATRIX_SIZE) &&  (height * lenght >= MINIMUM_MATRIX_SIZE)  ? height * lenght : -0) << CELL_SEPARATOR;
                 }
-                cout << '\n';              
+                buffer << '\n';              
             }
-            
+            buffer << '\n';              
         }
+        cout << buffer.str();
+        report_file << buffer.str();
         
     }
 };
@@ -159,7 +167,7 @@ int main()
             },
             {
                 std::make_unique<ParallelTorusAlgorithm>(2),
-                std::string("Parralel 2 t")
+                std::string("Parralel 2 threads")
             }
         },
         {4, 100, 1000, 3'000, 20'000, 65'536, 70'000, 100'000, 250'000, 1'000'000'000}
