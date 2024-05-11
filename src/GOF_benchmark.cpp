@@ -1,14 +1,13 @@
-#include "GameOfLife.hpp"
-#include "ParallelTorusAlgorithm.hpp"
-#include "SequentialVectorTorusGOFAlgorithm.hpp"
-#include "RandomFiller.hpp"
 #include <iostream>
 #include <chrono>
 #include <array>
 #include <cmath>
 #include <iomanip>
 #include <fstream>
-#include <iterator>
+
+#include "ParallelTorusAlgorithm.hpp"
+#include "SequentialVectorTorusGOFAlgorithm.hpp"
+#include "RandomFiller.hpp"
 
 using namespace GameOfLife;
 
