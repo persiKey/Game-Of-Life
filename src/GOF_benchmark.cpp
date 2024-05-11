@@ -13,7 +13,7 @@ using namespace GameOfLife;
 
 inline constexpr size_t PROCESSOR_OVERALL_WARMUP_ITERATIONS = 500'000'000;
 inline constexpr size_t MEASURES = 20;
-inline constexpr size_t MINIMUM_MATRIX_SIZE = 1024ull * 1024ull * 1ull;
+inline constexpr size_t MINIMUM_MATRIX_SIZE = 1000ull * 1000ull * 1ull;
 inline constexpr size_t MAXIMUM_MATRIX_SIZE = 1024ull * 1024ull * 1024ull * 4ull;
 inline constexpr int SEED = 131313;
 
@@ -29,7 +29,7 @@ inline constexpr size_t CELL_WIDTH = ALG_NAME_WIDTH + ALG_MEAN_WIDTH + ALG_DEVIA
 inline constexpr char FILL = ' ';
 inline constexpr char FIRST_COLUMN_SEPARATOR = '|';
 inline constexpr char FIRST_ROW_SEPARATOR = '-';
-inline constexpr char CELL_SEPARATOR = ',';
+inline constexpr char CELL_SEPARATOR = '|';
 inline constexpr char INTERSECT = '+';
 inline constexpr auto REPORT_FILENAME = "report.csv";
 
@@ -127,6 +127,9 @@ public:
         std::ofstream report_file(REPORT_FILENAME);
         std::stringstream buffer;
 
+        PrintSizes(buffer, sizes);
+        FlushBufferToStdoutAndFile(buffer, report_file);
+
         PrintFirstRow(buffer, sizes);
         
         for (const auto height : sizes)
@@ -165,6 +168,54 @@ public:
     }
 
 private:
+    static void PrintSizes(std::stringstream &buffer, std::vector<index_t> &sizes)
+    {
+        const int SIZES_CELL_WIDTH = log10(MAXIMUM_MATRIX_SIZE) + 2;
+
+        buffer << std::setfill(FILL);
+        buffer << std::setw(SIZES_CELL_WIDTH) << "" << FIRST_COLUMN_SEPARATOR;
+        for (const auto lenght : sizes)
+        {
+            buffer << std::setw(SIZES_CELL_WIDTH) << lenght << FIRST_COLUMN_SEPARATOR;
+        }
+        buffer << '\n';
+
+        buffer << std::setfill(FIRST_ROW_SEPARATOR) << std::setw(SIZES_CELL_WIDTH) << "" << INTERSECT;
+        for (const auto lenght : sizes)
+        {
+            buffer << std::setw(SIZES_CELL_WIDTH) << "" << FIRST_ROW_SEPARATOR;
+        }
+        buffer << '\n';
+        buffer << std::setfill(FILL);
+
+
+        for(const auto height : sizes)
+        {
+            buffer << std::setw(SIZES_CELL_WIDTH) << height << FIRST_COLUMN_SEPARATOR;
+            for(const auto lenght : sizes)
+            {
+                auto size = height*lenght;
+                if(size >= MINIMUM_MATRIX_SIZE && size <= MAXIMUM_MATRIX_SIZE)
+                {
+                    buffer << std::setw(SIZES_CELL_WIDTH) << size << FIRST_COLUMN_SEPARATOR;
+                }
+                else
+                {
+                    buffer << std::setw(SIZES_CELL_WIDTH) << '-' << FIRST_COLUMN_SEPARATOR;
+                }
+            }
+            buffer << '\n';
+        }
+        buffer << std::setfill(FIRST_ROW_SEPARATOR) << std::setw(SIZES_CELL_WIDTH) << "" << INTERSECT;
+        for (const auto lenght : sizes)
+        {
+            buffer << std::setw(SIZES_CELL_WIDTH) << "" << FIRST_ROW_SEPARATOR;
+        }
+        buffer << '\n';
+        buffer << '\n';
+        buffer << std::setfill(FILL);
+    }
+
     static void PrintHorizontalSeparator(std::stringstream &buffer, std::vector<index_t> &sizes)
     {
         buffer << std::setfill(FIRST_ROW_SEPARATOR) << std::setw(FIRST_COLUMN_WIDHT) << "" << INTERSECT;
@@ -250,10 +301,15 @@ int main()
             }
         },
         {
-            1,
-            2'000,
-            6'536,
-            7'000,
+            4,
+            1'000,
+            10'000,
+            16'384,
+            26'013,
+            50'000,
+            65'536,
+            100'000,
+            1'000'000'000
         });
 
     return 0;
