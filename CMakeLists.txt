@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.16)
 project(GameOfLife LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
@@ -13,7 +14,6 @@ set(GOF_SOURCE_DIR
 set(GOF_HEADERS_DIR
     ${CMAKE_CURRENT_SOURCE_DIR}/include/GameOfLife/
 )
-
 
 set (SRC_FILES 
     ${GOF_HEADERS_DIR}/GameOfLife.hpp
@@ -44,6 +44,8 @@ set (SRC_FILES
     ${GOF_SOURCE_DIR}/FromFileFiller.cpp
     ${GOF_HEADERS_DIR}/FromFileFiller.hpp
 
+    ${GOF_SOURCE_DIR}ParallelTorusAlgorithm.cpp
+    ${GOF_HEADERS_DIR}ParallelTorusAlgorithm.hpp
 )
 
 add_library(${PROJECT_NAME} ${SRC_FILES})
@@ -52,19 +54,20 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${GOF_HEADERS_DIR})
 set(DEMO ${PROJECT_NAME}_DEMO)
 add_executable(${DEMO} ${CMAKE_CURRENT_SOURCE_DIR}/src/GOF_demo.cpp)
 target_link_libraries(${DEMO} PRIVATE ${PROJECT_NAME})
-target_include_directories(${PROJECT_NAME} PUBLIC ${GOF_PUBLIC_HEADERS_DIR})
 
+set(BENCHMARK ${PROJECT_NAME}_BENCHMARK)
+add_executable(${BENCHMARK} ${CMAKE_CURRENT_SOURCE_DIR}/src/GOF_benchmark.cpp)
+target_link_libraries(${BENCHMARK} PRIVATE ${PROJECT_NAME})
 
+#[===[
 include(FetchContent)
 FetchContent_Declare(SFML
 GIT_REPOSITORY https://github.com/SFML/SFML.git
 GIT_TAG 2.6.x)
 FetchContent_MakeAvailable(SFML)
-
 set(GRAPHIC_DEMO ${PROJECT_NAME}_GRAPHIC_DEMO)
 add_executable(${GRAPHIC_DEMO} ${CMAKE_CURRENT_SOURCE_DIR}/src/GOF_graphic_demo.cpp)
 target_link_libraries(${GRAPHIC_DEMO} PRIVATE ${PROJECT_NAME})
-target_include_directories(${PROJECT_NAME} PUBLIC ${GOF_PUBLIC_HEADERS_DIR})
 target_link_libraries(${GRAPHIC_DEMO} PRIVATE sfml-graphics)
 
 if(WIN32)
@@ -78,3 +81,4 @@ if(WIN32)
 endif()
 
 install(TARGETS ${GRAPHIC_DEMO})
+]===]

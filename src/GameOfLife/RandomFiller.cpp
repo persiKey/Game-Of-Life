@@ -7,7 +7,7 @@
 
 namespace GameOfLife
 {
-RandomFiller::RandomFiller(double alpha)
+RandomFiller::RandomFiller(double alpha, int seed)
 : m_alpha(alpha)
 {
 }
@@ -16,6 +16,11 @@ void RandomFiller::Fill(std::shared_ptr<ICheckBoard> checkboard)
 {
     std::random_device rd;
     std::mt19937 gen(rd());
+
+    if(m_seed != 0)
+    {
+        gen.seed(m_seed);
+    }
 
     for (index_t j = 0; j < checkboard->Height(); ++j)
     {
