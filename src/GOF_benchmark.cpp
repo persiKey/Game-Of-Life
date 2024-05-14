@@ -18,7 +18,7 @@ inline constexpr size_t MAXIMUM_MATRIX_SIZE = 1024ull * 1024ull * 1024ull * 4ull
 inline constexpr int SEED = 131313;
 
 inline constexpr size_t FIRST_COLUMN_WIDHT = 12;
-inline constexpr size_t ALG_NAME_WIDTH = 20;
+inline constexpr size_t ALG_NAME_WIDTH = 18;
 inline constexpr size_t ALG_MEAN_PRECISION = 5;
 inline constexpr size_t ALG_MEAN_WIDTH = ALG_MEAN_PRECISION + 2;
 inline constexpr size_t ALG_DEVIATION_PRECISION = 4;
@@ -194,10 +194,11 @@ private:
             buffer << std::setw(SIZES_CELL_WIDTH) << height << FIRST_COLUMN_SEPARATOR;
             for(const auto lenght : sizes)
             {
-                auto size = height*lenght;
-                if(size >= MINIMUM_MATRIX_SIZE && size <= MAXIMUM_MATRIX_SIZE)
+                auto compute_size = (height) * (lenght + 2) - 2;
+                auto interface_size = height * lenght;
+                if(interface_size >= MINIMUM_MATRIX_SIZE && interface_size <= MAXIMUM_MATRIX_SIZE)
                 {
-                    buffer << std::setw(SIZES_CELL_WIDTH) << size << FIRST_COLUMN_SEPARATOR;
+                    buffer << std::setw(SIZES_CELL_WIDTH) << compute_size << FIRST_COLUMN_SEPARATOR;
                 }
                 else
                 {
@@ -245,7 +246,7 @@ private:
         buffer << std::setw(FIRST_COLUMN_WIDHT) << height << FIRST_COLUMN_SEPARATOR;
         for (const auto lenght : sizes)
         {
-            buffer << std::setw(ALG_NAME_WIDTH) << "Algorithm" << CELL_SEPARATOR;
+            buffer << std::setw(ALG_NAME_WIDTH) << "Algorithm | Trds" << CELL_SEPARATOR;
             buffer << std::setw(ALG_MEAN_WIDTH) << "Mean" << CELL_SEPARATOR;
             buffer << std::setw(ALG_DEVIATION_WIDTH) << "Dev" << FIRST_COLUMN_SEPARATOR;
         }
@@ -277,39 +278,41 @@ int main()
         {
             {
                 std::make_unique<SequentialVectorTorusGOFAlgorithm>(),
-                std::string("Sequential")
+                std::string("Sequential |    1")
             },
             {
                 std::make_unique<ParallelTorusAlgorithm>(2),
-                std::string("Parralel 2 threads")
+                std::string("Parralel  |    2")
             },
             {
                 std::make_unique<ParallelTorusAlgorithm>(4),
-                std::string("Parralel 4 threads")
+                std::string("Parralel  |    4")
             },
             {
                 std::make_unique<ParallelTorusAlgorithm>(8),
-                std::string("Parralel 8 threads")
+                std::string("Parralel  |    8")
+            },
+                        {
+                std::make_unique<ParallelTorusAlgorithm>(10),
+                std::string("Parralel  |   10")
             },
             {
                 std::make_unique<ParallelTorusAlgorithm>(12),
-                std::string("Parralel 12 threads")
+                std::string("Parralel  |   12")
             },
             {
                 std::make_unique<ParallelTorusAlgorithm>(16),
-                std::string("Parralel 16 threads")
+                std::string("Parralel  |   16")
             }
         },
         {
-            4,
-            1'000,
+            5'000,
             10'000,
             16'384,
             26'013,
             50'000,
             65'536,
             100'000,
-            1'000'000'000
         });
 
     return 0;

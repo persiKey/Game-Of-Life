@@ -1,6 +1,7 @@
 #include "SequentialVectorTorusGOFAlgorithm.hpp"
 #include <iostream>
 #include <cstring>
+
 namespace GameOfLife
 {
 
